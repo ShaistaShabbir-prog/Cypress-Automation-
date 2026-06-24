@@ -1,0 +1,23 @@
+name: Cypress E2E
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [project-1, project-2]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Cypress — ${{ matrix.project }}
+        uses: cypress-io/github-action@v6
+        with:
+          working-directory: ${{ matrix.project }}
+          install-command: npm install
+          start: npm start
+          wait-on: 'http://localhost:3000'
+        continue-on-error: true
